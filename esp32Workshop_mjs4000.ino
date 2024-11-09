@@ -78,7 +78,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     JsonObject cmdData = jsonReceiveDoc.as<JsonObject>();
     if (0 == strcmp(topic, MQTT_TOPIC_DISPLAY)) {
       //valid message received
-      redBrightness = cmdData["r"]; // this form allows you specify the type of the data you want from the JSON object
+      redBrightness = cmdData["r"]; 
       greenBrightness = cmdData["g"];
       blueBrightness = cmdData["b"];
       jsonReceiveDoc.clear();
@@ -91,7 +91,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       
     } else if (0 == strcmp(topic, MQTT_TOPIC_INTERVAL)) {
       //valid message received
-      ReportingInterval = cmdData["Interval"]; // this form allows you specify the type of the data you want from the JSON object
+      ReportingInterval = cmdData["Interval"];
       Serial.print("Reporting Interval has been changed:");
       Serial.println(ReportingInterval);
       jsonReceiveDoc.clear();
@@ -164,16 +164,16 @@ void loop() {
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
   } else {
-    // Set RGB LED Colour based on temp (0 for want off, 255 for want on)
-    blueBrightness = (t < ALARM_COLD) ? 255 : ((t < WARN_COLD) ? 150 : 0);
-    redBrightness = (t >= ALARM_HOT) ? 255 : ((t > WARN_HOT) ? 150 : 0);
-    greenBrightness = (t > ALARM_COLD) ? ((t <= WARN_HOT) ? 255 : ((t < ALARM_HOT) ? 150 : 0)) : 0;
-    blueBrightness = 255 - blueBrightness;
-    redBrightness = 255 - redBrightness;
-    greenBrightness = 255 - greenBrightness;
-    analogWrite(red, redBrightness);
-    analogWrite(green, greenBrightness);
-    analogWrite(blue, blueBrightness);    
+    // Set RGB LED Colour based on temp (0 for want off, 255 for want on), now controlled by MQTT command
+    //blueBrightness = (t < ALARM_COLD) ? 255 : ((t < WARN_COLD) ? 150 : 0);
+    //redBrightness = (t >= ALARM_HOT) ? 255 : ((t > WARN_HOT) ? 150 : 0);
+    //greenBrightness = (t > ALARM_COLD) ? ((t <= WARN_HOT) ? 255 : ((t < ALARM_HOT) ? 150 : 0)) : 0;
+    //blueBrightness = 255 - blueBrightness;
+    //redBrightness = 255 - redBrightness;
+    //greenBrightness = 255 - greenBrightness;
+    //analogWrite(red, redBrightness);
+    //analogWrite(green, greenBrightness);
+    //analogWrite(blue, blueBrightness);    
 
     // Print Message to console in JSON format
     status["temp"] = t;
